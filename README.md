@@ -1,0 +1,3 @@
+# aydalgoritmos
+
+#pip install django
