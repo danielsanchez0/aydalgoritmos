@@ -47,9 +47,9 @@ def graphApi(request,id=0):
 		return JsonResponse(grafos_serializer.data,safe=False)
 
 	elif request.method=='POST':
-		grafo_data = JSONParser().parse(request)
-		grafos_serializer = GrafoSerializer(data=grafo_data)
-		if grafos_serializer.is_valid():
-			grafos_serializer.save()
+		department_data = JSONParser().parse(request)
+		departments_serializer = GrafoSerializer(data=department_data)
+		if departments_serializer.is_valid():
+			departments_serializer.save()
 			return JsonResponse("añadido exitosamente", safe=False)
 		return JsonResponse("fallo el añadido",safe=False)
