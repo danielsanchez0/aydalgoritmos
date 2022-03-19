@@ -53,3 +53,12 @@ def graphApi(request,id=0):
 			departments_serializer.save()
 			return JsonResponse("añadido exitosamente", safe=False)
 		return JsonResponse("fallo el añadido",safe=False)
+
+	elif request.method=='PUT':
+		department_data=JSONParser().parse(request)
+		department=Departments.objects.get(departmentId = department_data['departmentId'])
+		departments_serializer = GrafoSerializer(department,data=department_data)
+		if departments_serializer.is_valid():
+			departments_serializer.save()
+			return JsonResponse("actualizado exitosamente", safe=False)
+		return JsonResponse("fallo el actualizado",safe=False)
