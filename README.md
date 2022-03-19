@@ -12,7 +12,7 @@
 - pip uninstall pymongo
 - pip install pymongo==3.12.1
 
-#make migrations
+# make migrations
 
 - python manage.py makemigrations algoritmosApp
 - python manage.py migrate
