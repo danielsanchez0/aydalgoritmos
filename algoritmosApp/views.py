@@ -43,7 +43,7 @@ def departmentApi(request,id=0):
 def graphApi(request,id=0):
 	if request.method=='GET':
 		graphs = Graphs.objects.all()
-		grafos_serializer = DepartmentSerializer(graphs,many=True)
+		grafos_serializer = GrafoSerializer(graphs,many=True)
 		return JsonResponse(grafos_serializer.data,safe=False)
 
 	elif request.method=='POST':
