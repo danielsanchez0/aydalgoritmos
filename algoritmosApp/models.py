@@ -9,3 +9,4 @@ class Graphs(models.Model):
 	grafoId = models.AutoField(primary_key=True)
 	nodos = models.TextField(default="{}")
 	aristas = models.TextField(default="{}")
+		

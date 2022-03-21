@@ -9,6 +9,8 @@ from algoritmosApp.serializers import DepartmentSerializer, GrafoSerializer
 import networkx as nx
 import matplotlib.pyplot as plt
 
+from algoritmosApp.Control.graphDrawControl import grapDrawControl
+
 # Create your views here.
 @csrf_exempt
 def departmentApi(request,id=0):
@@ -42,9 +44,18 @@ def departmentApi(request,id=0):
 @csrf_exempt
 def graphApi(request,id=0):
 	if request.method=='GET':
-		graphs = Graphs.objects.all()
-		grafos_serializer = GrafoSerializer(graphs,many=True)
-		return JsonResponse(grafos_serializer.data,safe=False)
+		if id == 0:
+			graphs = Graphs.objects.all()
+			grafos_serializer = GrafoSerializer(graphs,many=True)
+			return JsonResponse(grafos_serializer.data,safe=False)
+		elif id != 0 and id != None:
+			graphs = Graphs.objects.get(grafoId=id)
+			grafos_serializer = GrafoSerializer(graphs,many=False)
+
+			graph = grapDrawControl(str(grafos_serializer.data))
+			graph.getImageGraph()
+
+			return JsonResponse(grafos_serializer.data,safe=False)
 
 	elif request.method=='POST':
 		department_data = JSONParser().parse(request)
