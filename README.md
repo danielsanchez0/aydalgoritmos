@@ -1,6 +1,6 @@
 # aydalgoritmos
 
-#pip install django
+#pip install django==3.1.12
 #pip install djangorestframework
 #pip install django-cors-headers
 
@@ -15,6 +15,7 @@
 #make migrations
 
 - python manage.py makemigrations algoritmosApp
+- python manage.py migrate
 
 #ejecutar
 
