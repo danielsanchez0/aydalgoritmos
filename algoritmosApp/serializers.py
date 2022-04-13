@@ -9,4 +9,4 @@ class DepartmentSerializer(serializers.ModelSerializer):
 class GrafoSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Graphs
-		fields = ("grafoId","nodos","aristas")
+		fields = ("grafoId","grafoName","nodes","links")

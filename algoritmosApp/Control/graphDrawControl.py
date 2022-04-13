@@ -47,7 +47,8 @@ class grapDrawControl():
 		nx.draw_networkx(self.grafo,node_size=2000, node_color='yellow', font_size=16, font_weight='bold')
 	
 		#plt.tight_layout()
-		imagen = plt.savefig("GrafoFinal.png",dpi=300, bbox_inches='tight', format="PNG")
+		id = self.__getGrafoID()
+		imagen = plt.savefig(str("algoritmosApp/static/GrafoFinal"+id+".png"),dpi=300, bbox_inches='tight', format="PNG")
+		return str("http://127.0.0.1:8000/static/GrafoFinal"+id+".png")
 		#plt.show(block=False)
 		#plt.close('all')
-

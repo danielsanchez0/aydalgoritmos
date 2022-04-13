@@ -9,7 +9,7 @@ from algoritmosApp.serializers import DepartmentSerializer, GrafoSerializer
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from algoritmosApp.Control.graphDrawControl import grapDrawControl
+from algoritmosApp.control.graphDrawControl import grapDrawControl
 
 # Create your views here.
 @csrf_exempt
@@ -52,24 +52,47 @@ def graphApi(request,id=0):
 			graphs = Graphs.objects.get(grafoId=id)
 			grafos_serializer = GrafoSerializer(graphs,many=False)
 
-			graph = grapDrawControl(str(grafos_serializer.data))
-			graph.getImageGraph()
+			#print(grafo_serializer.data.nodes)
 
 			return JsonResponse(grafos_serializer.data,safe=False)
 
 	elif request.method=='POST':
-		department_data = JSONParser().parse(request)
-		departments_serializer = GrafoSerializer(data=department_data)
-		if departments_serializer.is_valid():
-			departments_serializer.save()
+		grafo_data = JSONParser().parse(request)
+		grafos_serializer = GrafoSerializer(data=grafo_data)
+		if grafos_serializer.is_valid():
+			grafos_serializer.save()
 			return JsonResponse("añadido exitosamente", safe=False)
 		return JsonResponse("fallo el añadido",safe=False)
 
 	elif request.method=='PUT':
-		department_data=JSONParser().parse(request)
-		department=Departments.objects.get(departmentId = department_data['departmentId'])
-		departments_serializer = GrafoSerializer(department,data=department_data)
-		if departments_serializer.is_valid():
-			departments_serializer.save()
-			return JsonResponse("actualizado exitosamente", safe=False)
-		return JsonResponse("fallo el actualizado",safe=False)
+		grafo_data=JSONParser().parse(request)
+
+		print(grafo_data)
+		grafo = Graphs.objects.get(grafoId = grafo_data['grafoId'])
+		
+		grafo.nodes = [{
+			
+		}]
+
+		grafo.save()
+		#grafos_serializer = GrafoSerializer(grafo,many=False)
+		#grafos_serializer.save()
+		return JsonResponse("añadido exitosamente", safe=False)
+
+		#grafos_serializer = GrafoSerializer(data=grafo_data)
+
+		#if grafos_serializer.is_valid():
+		#	grafos_serializer.save()
+		#	return JsonResponse("añadido exitosamente", safe=False)
+		#return JsonResponse("fallo el añadido",safe=False)
+		
+		#grafo_serializer = GrafoSerializer(grafo,data=grafo_data)
+		#if grafo_serializer.is_valid():
+		#	grafo_serializer.save()
+		#	return JsonResponse("actualizado exitosamente", safe=False)
+		#return JsonResponse("fallo el actualizado",safe=False)
+
+	elif request.method=='DELETE':
+		grafo = Graphs.objects.get(grafoId=id)
+		grafo.delete()
+		return JsonResponse("eliminado exitosamente", safe=False)
