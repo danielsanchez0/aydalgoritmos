@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+# from pyrsistent import T
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 
@@ -84,9 +85,16 @@ def graphApi(request,id=0):
 								"coordenates":None
 								})
 		elif grafo_data['tarea'] == "addLinks":
-			grafo.links.append({"source": grafo_data["source"],
-								"target": grafo_data["target"],
-								"distance": grafo_data["distance"]})
+			exist = False
+			i=0 
+			while i < len(grafo.links) and exist is False:
+				if grafo.links[i]["source"] == grafo_data["source"] and grafo.links[i]["target"] == grafo_data["target"] :
+					exist = True
+				i = i +1
+			if exist is False:
+				grafo.links.append({"source": grafo_data["source"],
+									"target": grafo_data["target"],
+									"distance": grafo_data["distance"]})
 
 		if grafo_data['tarea'] == "removeNode":
 			aux = None
