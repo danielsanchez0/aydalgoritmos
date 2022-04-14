@@ -1,4 +1,6 @@
 #from django.db import models
+from email.policy import default
+from tkinter import Y
 from djongo import models
 
 # Create your models here.
@@ -6,10 +8,22 @@ class Departments(models.Model):
 	departamentId = models.AutoField(primary_key=True)
 	departamentName = models.CharField(max_length=600)
 
+class Coordenates(models.Model):
+	x = models.IntegerField(null=False)
+	Y = models.IntegerField(null=False)
+	
+	class Meta:
+		abstract= True
 class Nodes(models.Model):
 	id = models.IntegerField(null=False)
 	name = models.CharField(max_length=25)
-	gender = models.CharField(max_length=20)
+	label = models.CharField(max_length=20)
+	data = models.CharField(max_length=20, default="{}")
+	type = models.CharField(max_length=20, default="")
+	radius = models.FloatField(null=False, default=1.5)
+	coordenates = models.EmbeddedField(
+        model_container=Coordenates, default=None
+    )
 
 	class Meta:
 		abstract = True 
@@ -17,6 +31,7 @@ class Nodes(models.Model):
 class Links(models.Model):
 	source = models.IntegerField(null=False)
 	target = models.IntegerField(null=False)
+	distance = models.IntegerField(null=False)
 
 	class Meta:
 		abstract = True
