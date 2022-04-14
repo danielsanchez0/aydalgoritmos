@@ -67,7 +67,7 @@ def graphApi(request,id=0):
 		grafo_data=JSONParser().parse(request)
 		grafo = Graphs.objects.get(grafoId = grafo_data['grafoId'])
 
-		if grafo_data['tarea'] == "node":
+		if grafo_data['tarea'] == "addNode":
 			grafo.nodes.append({"id": grafo_data["id"], 
 							"name": "Nodo "+str(grafo_data["id"]),
 							"label": "N"+str(grafo_data["id"]),
@@ -76,28 +76,29 @@ def graphApi(request,id=0):
 							"radius":1.5,
 							"coordenates":None
 							})
-		elif grafo_data['tarea'] == "links":
+		elif grafo_data['tarea'] == "addLinks":
 			grafo.links.append({"source": grafo_data["source"],
 								"target": grafo_data["target"],
 								"distance": grafo_data["distance"]})
+
+		if grafo_data['tarea'] == "removeNode":
+			aux = None
+			for j in grafo.nodes:
+				print("nodos ", j["id"])
+				if grafo_data['id'] == j["id"]:
+					print("Encontro",j)
+					aux = j
+					break
+			if aux is not None:
+				grafo.nodes.remove(aux)
 		grafo.save()
 		
 		return JsonResponse("añadido exitosamente", safe=False)
 
-		#grafos_serializer = GrafoSerializer(data=grafo_data)
-
-		#if grafos_serializer.is_valid():
-		#	grafos_serializer.save()
-		#	return JsonResponse("añadido exitosamente", safe=False)
-		#return JsonResponse("fallo el añadido",safe=False)
-		
-		#grafo_serializer = GrafoSerializer(grafo,data=grafo_data)
-		#if grafo_serializer.is_valid():
-		#	grafo_serializer.save()
-		#	return JsonResponse("actualizado exitosamente", safe=False)
-		#return JsonResponse("fallo el actualizado",safe=False)
-
 	elif request.method=='DELETE':
-		grafo = Graphs.objects.get(grafoId=id)
-		grafo.delete()
+		grafo_data=JSONParser().parse(request)
+		
+		if grafo_data['tarea'] == "grafo":
+			grafo = Graphs.objects.get(grafoId=id)
+			grafo.delete()
 		return JsonResponse("eliminado exitosamente", safe=False)
