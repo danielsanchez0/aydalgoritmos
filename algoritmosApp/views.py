@@ -68,14 +68,21 @@ def graphApi(request,id=0):
 		grafo = Graphs.objects.get(grafoId = grafo_data['grafoId'])
 
 		if grafo_data['tarea'] == "addNode":
-			grafo.nodes.append({"id": grafo_data["id"], 
-							"name": "Nodo "+str(grafo_data["id"]),
-							"label": "N"+str(grafo_data["id"]),
-							"data":{},
-							"type":"",
-							"radius":1.5,
-							"coordenates":None
-							})
+			exist = False
+			i = 0
+			while i < len(grafo.nodes) and exist is False:
+				if grafo.nodes[i]["id"] == grafo_data["id"]:
+					exist = True
+				i = i +1
+			if exist is False:
+				grafo.nodes.append({"id": grafo_data["id"], 
+								"name": "Nodo "+str(grafo_data["id"]),
+								"label": "N"+str(grafo_data["id"]),
+								"data":{},
+								"type":"",
+								"radius":1.5,
+								"coordenates":None
+								})
 		elif grafo_data['tarea'] == "addLinks":
 			grafo.links.append({"source": grafo_data["source"],
 								"target": grafo_data["target"],
