@@ -9,7 +9,6 @@ from algoritmosApp.serializers import DepartmentSerializer, GrafoSerializer
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from algoritmosApp.control.graphDrawControl import grapDrawControl
 
 # Create your views here.
 @csrf_exempt
@@ -66,17 +65,23 @@ def graphApi(request,id=0):
 
 	elif request.method=='PUT':
 		grafo_data=JSONParser().parse(request)
-
-		print(grafo_data)
 		grafo = Graphs.objects.get(grafoId = grafo_data['grafoId'])
-		
-		grafo.nodes = [{
-			
-		}]
 
+		if grafo_data['tarea'] == "node":
+			grafo.nodes.append({"id": grafo_data["id"], 
+							"name": "Nodo "+str(grafo_data["id"]),
+							"label": "N"+str(grafo_data["id"]),
+							"data":{},
+							"type":"",
+							"radius":1.5,
+							"coordenates":None
+							})
+		elif grafo_data['tarea'] == "links":
+			grafo.links.append({"source": grafo_data["source"],
+								"target": grafo_data["target"],
+								"distance": grafo_data["distance"]})
 		grafo.save()
-		#grafos_serializer = GrafoSerializer(grafo,many=False)
-		#grafos_serializer.save()
+		
 		return JsonResponse("añadido exitosamente", safe=False)
 
 		#grafos_serializer = GrafoSerializer(data=grafo_data)
