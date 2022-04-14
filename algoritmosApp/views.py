@@ -51,9 +51,6 @@ def graphApi(request,id=0):
 		elif id != 0 and id != None:
 			graphs = Graphs.objects.get(grafoId=id)
 			grafos_serializer = GrafoSerializer(graphs,many=False)
-
-			#print(grafo_serializer.data.nodes)
-
 			return JsonResponse(grafos_serializer.data,safe=False)
 
 	elif request.method=='POST':
@@ -65,9 +62,10 @@ def graphApi(request,id=0):
 		return JsonResponse("fallo el añadido",safe=False)
 
 	elif request.method=='PUT':
+		print("PETICION PUT")
 		grafo_data=JSONParser().parse(request)
 		grafo = Graphs.objects.get(grafoId = grafo_data['grafoId'])
-
+		print(grafo_data)
 		if grafo_data['tarea'] == "addNode":
 			exist = False
 			i = 0
@@ -120,8 +118,9 @@ def graphApi(request,id=0):
 				for el in auxL:
 					grafo.links.remove(el)
 		grafo.save()
-		
-		return JsonResponse("añadido exitosamente", safe=False)
+		grafos_serializer = GrafoSerializer(grafo,many=False)
+		print("RESPUESTA ", grafos_serializer)
+		return JsonResponse(grafos_serializer.data,safe=False)
 
 	elif request.method=='DELETE':
 		grafo_data=JSONParser().parse(request)
