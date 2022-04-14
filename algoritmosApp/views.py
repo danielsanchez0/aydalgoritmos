@@ -83,14 +83,27 @@ def graphApi(request,id=0):
 
 		if grafo_data['tarea'] == "removeNode":
 			aux = None
-			for j in grafo.nodes:
-				print("nodos ", j["id"])
-				if grafo_data['id'] == j["id"]:
-					print("Encontro",j)
-					aux = j
-					break
+			i = 0
+			j = 0
+			auxL = []
+			while i <len(grafo.nodes) and aux is None:
+				# print(grafo.nodes[i]["id"])
+				if grafo.nodes[i]["id"] == grafo_data["id"]:
+					aux = grafo.nodes[i]
+					# print(aux)
+				i= i +1
 			if aux is not None:
 				grafo.nodes.remove(aux)
+			print("TAMAÑO ",len(grafo.links))
+			while j <len(grafo.links):
+				print(grafo.links[j]["target"])
+				if grafo.links[j]["source"] == grafo_data["id"] or grafo.links[j]["target"] == grafo_data["id"]:
+					print("entró ",grafo.links[j])
+					auxL.append(grafo.links[j])
+				j = j+1
+			if len(auxL)>0:
+				for el in auxL:
+					grafo.links.remove(el)
 		grafo.save()
 		
 		return JsonResponse("añadido exitosamente", safe=False)
