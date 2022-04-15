@@ -88,8 +88,22 @@ def graphApi(request,id=0):
 			while i < len(grafo.nodes) and changed is False:
 				if grafo.nodes[i]["id"] == grafo_data["id"]:
 					if "name" in grafo_data:
-						print("name ", grafo_data["name"])
 						grafo.nodes[i]["name"] = grafo_data["name"]
+						changed = True
+					if "label" in grafo_data:
+						grafo.nodes[i]["label"] = grafo_data["label"]
+						changed = True
+					if "radius" in grafo_data:
+						grafo.nodes[i]["radius"] = grafo_data["radius"]
+						changed = True
+					if "data" in grafo_data:
+						grafo.nodes[i]["data"] = grafo_data["data"]
+						changed = True
+					if "type" in grafo_data:
+						grafo.nodes[i]["type"] = grafo_data["type"]
+						changed = True
+					if "coordenates" in grafo_data:
+						grafo.nodes[i]["coordenates"] = grafo_data["coordenates"]
 						changed = True
 				i=i+1
 		elif grafo_data['tarea'] == "addLinks":
