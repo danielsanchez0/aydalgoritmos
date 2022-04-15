@@ -82,6 +82,16 @@ def graphApi(request,id=0):
 								"radius":1.5,
 								"coordenates":None
 								})
+		elif grafo_data['tarea'] == "updateNode":
+			i = 0
+			changed = False
+			while i < len(grafo.nodes) and changed is False:
+				if grafo.nodes[i]["id"] == grafo_data["id"]:
+					if "name" in grafo_data:
+						print("name ", grafo_data["name"])
+						grafo.nodes[i]["name"] = grafo_data["name"]
+						changed = True
+				i=i+1
 		elif grafo_data['tarea'] == "addLinks":
 			exist = False
 			i=0 
