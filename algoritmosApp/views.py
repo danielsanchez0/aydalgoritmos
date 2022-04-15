@@ -132,10 +132,8 @@ def graphApi(request,id=0):
 				k=0
 				changed = False
 				while k <len(grafo.links) and changed is False:
-					print("llegó ", grafo_data["source"], " / ", grafo_data["target"] )
 					if grafo.links[k]["source"] == grafo_data["source"] and grafo.links[k]["target"] == grafo_data["target"]:
 						print(grafo.links[k]["source"], " / ", grafo.links[k]["target"])
-						#print("actualizar ", grafo_data["distance"], " / ", grafo.links[k]["distance"])
 						grafo.links[k]["distance"] = grafo_data["distance"]
 						changed = True
 					k = k +1
