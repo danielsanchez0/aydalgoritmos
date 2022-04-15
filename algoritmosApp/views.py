@@ -65,7 +65,7 @@ def graphApi(request,id=0):
 		print("PETICION PUT")
 		grafo_data=JSONParser().parse(request)
 		grafo = Graphs.objects.get(grafoId = grafo_data['grafoId'])
-		print(grafo_data)
+		#print(grafo_data)
 		if grafo_data['tarea'] == "addNode":
 			exist = False
 			i = 0
@@ -126,6 +126,19 @@ def graphApi(request,id=0):
 					grafo.links.append({"source": grafo_data["source"],
 										"target": grafo_data["target"],
 										"distance": grafo_data["distance"]})
+		
+		if grafo_data['tarea'] == "updateLink":
+			if "distance" in grafo_data:
+				k=0
+				changed = False
+				while k <len(grafo.links) and changed is False:
+					print("llegó ", grafo_data["source"], " / ", grafo_data["target"] )
+					if grafo.links[k]["source"] == grafo_data["source"] and grafo.links[k]["target"] == grafo_data["target"]:
+						print(grafo.links[k]["source"], " / ", grafo.links[k]["target"])
+						#print("actualizar ", grafo_data["distance"], " / ", grafo.links[k]["distance"])
+						grafo.links[k]["distance"] = grafo_data["distance"]
+						changed = True
+					k = k +1
 
 		if grafo_data['tarea'] == "removeLink":
 			k=0
@@ -151,11 +164,11 @@ def graphApi(request,id=0):
 				i= i +1
 			if aux is not None:
 				grafo.nodes.remove(aux)
-			print("TAMAÑO ",len(grafo.links))
+			#print("TAMAÑO ",len(grafo.links))
 			while j <len(grafo.links):
 				print(grafo.links[j]["target"])
 				if grafo.links[j]["source"] == grafo_data["id"] or grafo.links[j]["target"] == grafo_data["id"]:
-					print("entró ",grafo.links[j])
+					#print("entró ",grafo.links[j])
 					auxL.append(grafo.links[j])
 				j = j+1
 			if len(auxL)>0:
