@@ -109,15 +109,35 @@ def graphApi(request,id=0):
 		elif grafo_data['tarea'] == "addLinks":
 			exist = False
 			i=0 
-			while i < len(grafo.links) and exist is False:
-				if grafo.links[i]["source"] == grafo_data["source"] and grafo.links[i]["target"] == grafo_data["target"] :
-					exist = True
-				i = i +1
-			if exist is False:
-				grafo.links.append({"source": grafo_data["source"],
-									"target": grafo_data["target"],
-									"distance": grafo_data["distance"]})
+			cont = 0
+			while i < len(grafo.links) and cont <2:
+				if grafo.links[i]["source"] == grafo_data["source"]:
+					cont = cont + 1
+				if grafo.links[i]["target"] == grafo_data["target"]:
+					cont = cont + 1
+				i = i + 1
+			if cont == 2:
+				i = 0
+				while i < len(grafo.links) and exist is False:
+					if grafo.links[i]["source"] == grafo_data["source"] and grafo.links[i]["target"] == grafo_data["target"] :
+						exist = True
+					i = i +1
+				if exist is False:
+					grafo.links.append({"source": grafo_data["source"],
+										"target": grafo_data["target"],
+										"distance": grafo_data["distance"]})
 
+		if grafo_data['tarea'] == "removeLink":
+			k=0
+			removed = False
+			aux = None
+			while k <len(grafo.links) and removed is False:
+				if grafo.links[k]["source"] == grafo_data["source"] or grafo.links[k]["target"] == grafo_data["target"]:
+					aux = grafo.links[k]
+					removed = True
+				k = k+1
+			if aux is not None:
+				grafo.links.remove(aux)
 		if grafo_data['tarea'] == "removeNode":
 			aux = None
 			i = 0
