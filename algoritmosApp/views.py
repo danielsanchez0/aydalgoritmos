@@ -107,16 +107,17 @@ def graphApi(request,id=0):
 						changed = True
 				i=i+1
 		elif grafo_data['tarea'] == "addLinks":
+			print("Llegó ", grafo_data)
 			exist = False
 			i=0 
 			cont = 0
-			while i < len(grafo.links) and cont <2:
-				if grafo.links[i]["source"] == grafo_data["source"]:
+			while i < len(grafo.links):
+				if grafo.links[i]["source"] == grafo_data["source"] and grafo.links[i]["target"] == grafo_data["target"]:
 					cont = cont + 1
-				if grafo.links[i]["target"] == grafo_data["target"]:
-					cont = cont + 1
-				i = i + 1
-			if cont == 2:
+					print("uno")
+				i = i +1
+			if cont ==0:
+				print("Entro")
 				i = 0
 				while i < len(grafo.links) and exist is False:
 					if grafo.links[i]["source"] == grafo_data["source"] and grafo.links[i]["target"] == grafo_data["target"] :
@@ -174,7 +175,7 @@ def graphApi(request,id=0):
 					grafo.links.remove(el)
 		grafo.save()
 		grafos_serializer = GrafoSerializer(grafo,many=False)
-		print("RESPUESTA ", grafos_serializer)
+		#print("RESPUESTA ", grafos_serializer)
 		return JsonResponse(grafos_serializer.data,safe=False)
 
 	elif request.method=='DELETE':
