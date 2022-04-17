@@ -51,6 +51,7 @@ def graphApi(request,id=0):
 		elif id != 0 and id != None:
 			graphs = Graphs.objects.get(grafoId=id)
 			grafos_serializer = GrafoSerializer(graphs,many=False)
+			print("Grafo ", grafos_serializer.data)
 			return JsonResponse(grafos_serializer.data,safe=False)
 
 	elif request.method=='POST':
@@ -107,23 +108,23 @@ def graphApi(request,id=0):
 						changed = True
 				i=i+1
 		elif grafo_data['tarea'] == "addLinks":
-			print("Llegó ", grafo_data)
+			# print("Llegó ", grafo_data)
 			exist = False
 			i=0 
 			cont = 0
-			while i < len(grafo.links):
-				if grafo.links[i]["source"] == grafo_data["source"] and grafo.links[i]["target"] == grafo_data["target"]:
-					cont = cont + 1
-					print("uno")
+			while i< len(grafo.nodes) and cont <2: # comprobar que sea nodos existentes
+				if grafo_data["source"] == grafo.nodes[i]["id"]:
+					cont = cont +1
+				if grafo_data["target"] == grafo.nodes[i]["id"]:
+					cont = cont +1
 				i = i +1
-			if cont ==0:
-				print("Entro")
+			if cont == 2:	# los nodos existen
 				i = 0
 				while i < len(grafo.links) and exist is False:
 					if grafo.links[i]["source"] == grafo_data["source"] and grafo.links[i]["target"] == grafo_data["target"] :
 						exist = True
 					i = i +1
-				if exist is False:
+				if exist is False: # la arista no existe
 					grafo.links.append({"source": grafo_data["source"],
 										"target": grafo_data["target"],
 										"distance": grafo_data["distance"]})
