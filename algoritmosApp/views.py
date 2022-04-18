@@ -10,6 +10,14 @@ from algoritmosApp.serializers import DepartmentSerializer, GrafoSerializer
 import networkx as nx
 import matplotlib.pyplot as plt
 
+from django.core.files.storage import FileSystemStorage
+
+def simple_upload(request):
+	myfile = request.FILES['myfile']
+	fs = FileSystemStorage()
+	filename = fs.save(myfile.name, myfile)
+	upload_file_url = fs.url(filename)
+	return JsonResponse(upload_file_url,safe=False)
 
 # Create your views here.
 @csrf_exempt
@@ -51,7 +59,7 @@ def graphApi(request,id=0):
 		elif id != 0 and id != None:
 			graphs = Graphs.objects.get(grafoId=id)
 			grafos_serializer = GrafoSerializer(graphs,many=False)
-			print("Grafo ", grafos_serializer.data)
+			#print("Grafo ", grafos_serializer.data)
 			return JsonResponse(grafos_serializer.data,safe=False)
 
 	elif request.method=='POST':
@@ -59,7 +67,11 @@ def graphApi(request,id=0):
 		grafos_serializer = GrafoSerializer(data=grafo_data)
 		if grafos_serializer.is_valid():
 			grafos_serializer.save()
-			return JsonResponse("añadido exitosamente", safe=False)
+
+			graphs = Graphs.objects.all()
+			grafo_serializer = GrafoSerializer(graphs,many=True)
+			return JsonResponse(grafo_serializer.data,safe=False)
+			
 		return JsonResponse("fallo el añadido",safe=False)
 
 	elif request.method=='PUT':
@@ -108,7 +120,7 @@ def graphApi(request,id=0):
 						changed = True
 				i=i+1
 		elif grafo_data['tarea'] == "addLinks":
-			# print("Llegó ", grafo_data)
+			print("Llegó ", grafo_data)
 			exist = False
 			i=0 
 			cont = 0
@@ -118,6 +130,7 @@ def graphApi(request,id=0):
 				if grafo_data["target"] == grafo.nodes[i]["id"]:
 					cont = cont +1
 				i = i +1
+			print("	nodos ", cont)
 			if cont == 2:	# los nodos existen
 				i = 0
 				while i < len(grafo.links) and exist is False:
@@ -180,9 +193,8 @@ def graphApi(request,id=0):
 		return JsonResponse(grafos_serializer.data,safe=False)
 
 	elif request.method=='DELETE':
-		grafo_data=JSONParser().parse(request)
-		
-		if grafo_data['tarea'] == "grafo":
-			grafo = Graphs.objects.get(grafoId=id)
-			grafo.delete()
-		return JsonResponse("eliminado exitosamente", safe=False)
+		grafo = Graphs.objects.get(grafoId=id)
+		grafo.delete()
+		graphs = Graphs.objects.all()
+		grafo_serializer = GrafoSerializer(graphs,many=True)
+		return JsonResponse(grafo_serializer.data,safe=False)
