@@ -79,6 +79,10 @@ def graphApi(request,id=0):
 		grafo_data=JSONParser().parse(request)
 		grafo = Graphs.objects.get(grafoId = grafo_data['grafoId'])
 		#print(grafo_data)
+		if grafo_data['tarea'] == "reset":
+			#print("Llegó ", grafo_data)
+			grafo.nodes = grafo_data["nodes"]
+			grafo.links = grafo_data["links"]
 		if grafo_data['tarea'] == "addNode":
 			exist = False
 			i = 0
@@ -120,7 +124,7 @@ def graphApi(request,id=0):
 						changed = True
 				i=i+1
 		elif grafo_data['tarea'] == "addLinks":
-			print("Llegó ", grafo_data)
+			#print("Llegó ", grafo_data)
 			exist = False
 			i=0 
 			cont = 0
@@ -130,7 +134,7 @@ def graphApi(request,id=0):
 				if grafo_data["target"] == grafo.nodes[i]["id"]:
 					cont = cont +1
 				i = i +1
-			print("	nodos ", cont)
+			#print("	nodos ", cont)
 			if cont == 2:	# los nodos existen
 				i = 0
 				while i < len(grafo.links) and exist is False:
@@ -148,7 +152,7 @@ def graphApi(request,id=0):
 				changed = False
 				while k <len(grafo.links) and changed is False:
 					if grafo.links[k]["source"] == grafo_data["source"] and grafo.links[k]["target"] == grafo_data["target"]:
-						print(grafo.links[k]["source"], " / ", grafo.links[k]["target"])
+						#print(grafo.links[k]["source"], " / ", grafo.links[k]["target"])
 						grafo.links[k]["distance"] = grafo_data["distance"]
 						changed = True
 					k = k +1
