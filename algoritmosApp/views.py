@@ -11,12 +11,29 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 from django.core.files.storage import FileSystemStorage
+import urllib.request
+import json
 
 def simple_upload(request):
 	myfile = request.FILES['myfile']
 	fs = FileSystemStorage()
 	filename = fs.save(myfile.name, myfile)
 	upload_file_url = fs.url(filename)
+	link_servidor = "http://localhost:8000"
+
+	direccion = str(link_servidor+str(upload_file_url))
+
+	with urllib.request.urlopen(direccion) as url:
+		s = url.read()
+		my_json = s.decode('utf8').replace("'", '"')
+		data = json.loads(my_json)
+
+		grafo = Graphs(grafoName=data['grafoName'],nodes=data['nodes'],links=data['links'])
+		grafo.save()
+
+		grafos_serializer = GrafoSerializer(grafo,many=False)
+		return JsonResponse(grafos_serializer.data,safe=False)
+
 	return JsonResponse(upload_file_url,safe=False)
 
 # Create your views here.
