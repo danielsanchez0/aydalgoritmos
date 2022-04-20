@@ -7,6 +7,7 @@ urlpatterns=[
 	url(r'^department/([0-9]+)$',views.departmentApi),
 	url(r'^graph$',views.graphApi),
 	url(r'^graph/([0-9]+)$',views.graphApi),
-	url(r'^archivo$',views.simple_upload)
+	url(r'^archivo$',views.simple_upload),
+	url(r'^randomgraph$', views.random_graph)
 
 ]

@@ -13,6 +13,55 @@ import matplotlib.pyplot as plt
 from django.core.files.storage import FileSystemStorage
 import urllib.request
 import json
+import random
+from datetime import datetime
+
+def random_graph(request):
+	cantidad_nodos = random.randint(5, 40)
+	cantidad_aristas = random.randint(1,cantidad_nodos)
+
+	nodos = []
+	links = []
+	nodos_id = []
+	combinaciones = []
+
+	for i in range(1,cantidad_nodos):
+		nodos_id.append(i)
+		nodo = {
+				"id": i,
+				"name": "Nodo "+str(i),
+				"label": "N"+str(i),
+				"data": "{}",
+				"type": "",
+				"radius": 1.5,
+				"coordenates": None
+			}
+
+		nodos.append(nodo)
+
+	for i in range(cantidad_aristas):
+		combinacion = random.choices(nodos_id,k=2)
+
+	 	if combinacion[0] != combinacion[1]:
+			if combinacion not in combinaciones and [combinacion[1],combinacion[0] not in combinaciones]:
+	    		combinaciones.append(combinacion)
+      
+	for i in combinaciones:
+  		link = {
+		    "source": i[0],
+		    "target": i[1],
+		    "distance": random.randint(1,200)
+		  }
+
+  		links.append(link)
+ 
+	grafoName = "Random"+str(format(datetime.now()))
+
+	grafo = Graphs(grafoName=grafoName,nodes=nodos,links=links)
+	grafo.save()
+
+	grafos_serializer = GrafoSerializer(grafo,many=False)
+	return JsonResponse(grafos_serializer.data,safe=False)
 
 def simple_upload(request):
 	myfile = request.FILES['myfile']
