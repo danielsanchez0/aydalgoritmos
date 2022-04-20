@@ -33,7 +33,7 @@ def random_graph(request):
 				"label": "N"+str(i),
 				"data": "{}",
 				"type": "",
-				"radius": 1.5,
+				"radius": 12,
 				"coordenates": None
 			}
 
@@ -42,9 +42,9 @@ def random_graph(request):
 	for i in range(cantidad_aristas):
 		combinacion = random.choices(nodos_id,k=2)
 
-	 	if combinacion[0] != combinacion[1]:
-			if combinacion not in combinaciones and [combinacion[1],combinacion[0] not in combinaciones]:
-	    		combinaciones.append(combinacion)
+		if combinacion[0] != combinacion[1]:
+	 		if combinacion not in combinaciones and [combinacion[1],combinacion[0] not in combinaciones]:
+	 			combinaciones.append(combinacion)
       
 	for i in combinaciones:
   		link = {
