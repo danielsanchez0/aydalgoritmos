@@ -20,7 +20,7 @@ class Nodes(models.Model):
 	label = models.CharField(max_length=20)
 	data = models.CharField(max_length=20, default="{}")
 	type = models.CharField(max_length=20, default="")
-	radius = models.FloatField(null=False, default=1.5)
+	radius = models.FloatField(null=False, default=30)
 	coordenates = models.EmbeddedField(
         model_container=Coordenates, default=None
     )
