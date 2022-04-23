@@ -162,7 +162,7 @@ def graphApi(request,id=0):
 								"label": "N"+str(grafo_data["id"]),
 								"data":{},
 								"type":"",
-								"radius":1.5,
+								"radius":grafo_data["radius"],
 								"coordenates":None
 								})
 		elif grafo_data['tarea'] == "updateNode":
