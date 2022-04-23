@@ -16,6 +16,25 @@ import json
 import random
 from datetime import datetime
 
+from algoritmosApp.Control.archivos import archivosControl
+
+def export_xml(request, id=0):
+	graphs = Graphs.objects.get(grafoId=id)
+	grafos_serializer = GrafoSerializer(graphs,many=False)
+
+	d = grafos_serializer.data
+	xmlstr = archivosControl.jsonToXML(d)
+
+	with open("./media/xml_export/json_to_xml_"+str(graphs.grafoId)+".xml", "w") as f:
+		f.write(xmlstr)
+
+	info = {
+		"grafoId": graphs.grafoId,
+		"link": "http://127.0.0.1:8000/media/xml_export/json_to_xml_"+str(graphs.grafoId)+".xml"
+	}
+
+	return JsonResponse(info,safe=False)
+
 def random_graph(request):
 	cantidad_nodos = random.randint(5, 40)
 	cantidad_aristas = random.randint(1,cantidad_nodos)
@@ -63,20 +82,39 @@ def random_graph(request):
 	grafos_serializer = GrafoSerializer(grafo,many=False)
 	return JsonResponse(grafos_serializer.data,safe=False)
 
+def img_upload(request):
+	myfile = request.FILES['myfile']
+	print(myfile)
+	fs = FileSystemStorage()
+	filename = fs.save(myfile.name+".png", myfile)
+	upload_file_url = fs.url(filename)
+
+	return JsonResponse("exito",safe=False)
+
 def simple_upload(request):
 	myfile = request.FILES['myfile']
+	print(myfile)
 	fs = FileSystemStorage()
 	filename = fs.save(myfile.name, myfile)
 	upload_file_url = fs.url(filename)
 	link_servidor = "http://localhost:8000"
 
 	direccion = str(link_servidor+str(upload_file_url))
+	data = None
 
-	with urllib.request.urlopen(direccion) as url:
-		s = url.read()
-		my_json = s.decode('utf8').replace("'", '"')
-		data = json.loads(my_json)
+	if archivosControl.getExtensionFile(direccion) == '.json':
+		with urllib.request.urlopen(direccion) as url:
+			s = url.read()
+			my_json = s.decode('utf8').replace("'", '"')
+			data = json.loads(my_json)
+			print(type(data))
 
+	elif archivosControl.getExtensionFile(direccion) == '.xml':
+		data = archivosControl.xmlToJson(direccion)
+		#data = json.dumps(s)
+		print(data)
+
+	if  data['grafoId'] != None and data['grafoName'] != None:
 		grafo = Graphs(grafoName=data['grafoName'],nodes=data['nodes'],links=data['links'])
 		grafo.save()
 
