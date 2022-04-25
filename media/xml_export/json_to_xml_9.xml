@@ -147,15 +147,6 @@
          <radius>10.0</radius>
          <coordenates>None</coordenates>
       </node>
-      <node>
-         <id>18</id>
-         <name>Nodo 18</name>
-         <label>N18</label>
-         <data>{}</data>
-         <type/>
-         <radius>1.5</radius>
-         <coordenates>None</coordenates>
-      </node>
    </nodes>
    <links>
       <link>
