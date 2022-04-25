@@ -86,10 +86,15 @@ def img_upload(request):
 	myfile = request.FILES['myfile']
 	print(myfile)
 	fs = FileSystemStorage()
-	filename = fs.save(myfile.name+".png", myfile)
+	filename = fs.save(myfile.name+".jpg", myfile)
 	upload_file_url = fs.url(filename)
 
-	return JsonResponse("exito",safe=False)
+	link_servidor = "http://localhost:8000"
+	direccion = str(link_servidor+str(upload_file_url))
+	print(direccion)
+	resultado = archivosControl.grafoToPDF(direccion)
+
+	return JsonResponse(resultado, safe=False)
 
 def simple_upload(request):
 	myfile = request.FILES['myfile']
