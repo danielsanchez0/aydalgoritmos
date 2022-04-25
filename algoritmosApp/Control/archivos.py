@@ -4,6 +4,11 @@ from xml.dom import minidom
 import urllib.request
 import xml.etree.cElementTree as e
 
+#librerias para trabajar con PDF
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.utils import ImageReader
+
 class archivosControl():
 	def getExtensionFile(path):
 		root, extension = os.path.splitext(path)
@@ -99,3 +104,22 @@ class archivosControl():
 		a = e.ElementTree(r)
 		xmlstr = (minidom.parseString(e.tostring(r)).toprettyxml(indent = "   "))
 		return xmlstr
+
+	def grafoToPDF(address):
+		try:
+			w, h = A4
+			c = canvas.Canvas("././media/pdf/imagen.pdf", pagesize=(2034,1051))
+			img = ImageReader(address)
+			img_w, img_h = img.getSize()
+
+			c.drawImage(img, 0, 0, width=2034, height=1051, mask='auto')
+			c.save()
+
+			direccion = {
+				"link": "http://localhost:8000/media/pdf/imagen.pdf"
+			}
+
+			return direccion
+		except ValueError:
+			print("Oops!  problemas generando el pdf.  Try again...")
+
