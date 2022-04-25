@@ -25,3 +25,6 @@
 
 - pip install networkx
 - pip install matplotlib
+
+# libreria PDF
+- pip install reportlab
