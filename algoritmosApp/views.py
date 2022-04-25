@@ -188,6 +188,9 @@ def graphApi(request,id=0):
 		grafo_data=JSONParser().parse(request)
 		grafo = Graphs.objects.get(grafoId = grafo_data['grafoId'])
 		#print(grafo_data)
+		if grafo_data['tarea'] == "back":
+			grafo.nodes = grafo_data["nodes"]
+			grafo.links = grafo_data["links"]
 		if grafo_data['tarea'] == "reset":
 			#print("Llegó ", grafo_data)
 			grafo.nodes = grafo_data["nodes"]
