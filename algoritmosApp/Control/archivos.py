@@ -8,6 +8,7 @@ import xml.etree.cElementTree as e
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import ImageReader
+from reportlab.lib import colors
 
 class archivosControl():
 	def getExtensionFile(path):
@@ -109,10 +110,15 @@ class archivosControl():
 		try:
 			w, h = A4
 			c = canvas.Canvas("././media/pdf/imagen.pdf", pagesize=(2034,1051))
+			text = c.beginText(20,40)
+			text.setFont("Courier", 18)
+			text.setFillColor(colors.red)
+			text.textLine("Grafo")
+			c.drawText(text)
 			img = ImageReader(address)
 			img_w, img_h = img.getSize()
-
-			c.drawImage(img, 0, 0, width=2034, height=1051, mask='auto')
+			#c.drawString(0, 0, "¡Hola, mundo!")
+			c.drawImage(img, 20, 80, width=2034, height=500, mask='auto')
 			c.save()
 
 			direccion = {
