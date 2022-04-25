@@ -219,7 +219,7 @@ def graphApi(request,id=0):
 					if "label" in grafo_data:
 						grafo.nodes[i]["label"] = grafo_data["label"]
 						changed = True
-					if "radius" in grafo_data:
+					if "radius" in grafo_data and grafo_data["radius"] >0:
 						grafo.nodes[i]["radius"] = grafo_data["radius"]
 						changed = True
 					if "data" in grafo_data:
