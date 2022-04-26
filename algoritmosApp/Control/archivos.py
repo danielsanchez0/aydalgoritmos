@@ -1,3 +1,4 @@
+from io import BytesIO
 import os
 import json
 from xml.dom import minidom
@@ -9,6 +10,8 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import ImageReader
 from reportlab.lib import colors
+import xlsxwriter
+from urllib.request import urlopen
 
 class archivosControl():
 	def getExtensionFile(path):
@@ -129,3 +132,22 @@ class archivosControl():
 		except ValueError:
 			print("Oops!  problemas generando el pdf.  Try again...")
 
+	def graphToExcel(address):
+		try:
+			print("IMAGEN ", address)
+			workbook = xlsxwriter.Workbook('././media/excel/image.xlsx')
+			worksheet = workbook.add_worksheet()
+			#Widen the first column to make the text clearer.
+			worksheet.set_column('A:A', 30)
+			#Insert an image.
+			worksheet.write('A1', 'Grafo')
+			image_data = BytesIO(urlopen(address).read())
+			print(image_data)
+			worksheet.insert_image('A1', address, {'image_data': image_data})
+			workbook.close()
+			direccion = {
+				"link": "http://localhost:8000/media/excel/image.xlsx"
+			}
+			return direccion
+		except ValueError:
+			print("Oops!  problemas generando el csv.  Try again...")

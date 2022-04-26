@@ -73,7 +73,7 @@ def random_graph(request):
 		  }
 
   		links.append(link)
- 
+
 	grafoName = "Random"+str(format(datetime.now()))
 
 	grafo = Graphs(grafoName=grafoName,nodes=nodos,links=links)
@@ -92,7 +92,21 @@ def img_upload(request):
 	link_servidor = "http://localhost:8000"
 	direccion = str(link_servidor+str(upload_file_url))
 	print(direccion)
-	resultado = archivosControl.grafoToPDF(direccion)
+	resultado = archivosControl.graphToExcel(direccion)
+
+	return JsonResponse(resultado, safe=False)
+
+def img_ex(request):
+	myfile = request.FILES['myfile']
+	print(myfile)
+	fs = FileSystemStorage()
+	filename = fs.save(myfile.name+".jpg", myfile)
+	upload_file_url = fs.url(filename)
+
+	link_servidor = "http://localhost:8000"
+	direccion = str(link_servidor+str(upload_file_url))
+	print(direccion)
+	resultado = archivosControl.graphToExcel(direccion)
 
 	return JsonResponse(resultado, safe=False)
 
