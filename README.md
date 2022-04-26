@@ -12,19 +12,22 @@
 - pip uninstall pymongo
 - pip install pymongo==3.12.1
 
-#make migrations
+# Make migrations
 
 - python manage.py makemigrations algoritmosApp
 - python manage.py migrate
 
-#ejecutar
+# Ejecutar
 
 - python manage.py runserver
 
-#librerias para dibujar
+# Librerias para dibujar
 
 - pip install networkx
 - pip install matplotlib
 
-# libreria PDF
+# Libreria PDF
 - pip install reportlab
+
+# Librería xlsx
+- pip install XlsxWriter 
