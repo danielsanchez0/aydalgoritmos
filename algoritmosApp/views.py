@@ -92,7 +92,7 @@ def img_upload(request):
 	link_servidor = "http://localhost:8000"
 	direccion = str(link_servidor+str(upload_file_url))
 	print(direccion)
-	resultado = archivosControl.graphToExcel(direccion)
+	resultado = archivosControl.grafoToPDF(direccion)
 
 	return JsonResponse(resultado, safe=False)
 
