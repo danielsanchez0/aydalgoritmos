@@ -36,15 +36,17 @@ def export_xml(request, id=0):
 	return JsonResponse(info,safe=False)
 
 def random_graph(request):
-	cantidad_nodos = random.randint(5, 40)
-	cantidad_aristas = random.randint(1,cantidad_nodos)
+	grafo_data=JSONParser().parse(request)
+	print(grafo_data)
+	cantidad_nodos = int(grafo_data['cant_nodos'])
+	cantidad_aristas = int(grafo_data['cant_aristas'])
 
 	nodos = []
 	links = []
 	nodos_id = []
 	combinaciones = []
 
-	for i in range(1,cantidad_nodos):
+	for i in range(1,cantidad_nodos+1):
 		nodos_id.append(i)
 		nodo = {
 				"id": i,
