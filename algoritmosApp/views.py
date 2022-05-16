@@ -67,7 +67,7 @@ def random_graph(request):
         if combinacion[0] != combinacion[1]:
             if [combinacion[0], combinacion[1]] not in combinaciones and [combinacion[1], combinacion[0] not in combinaciones]:
                 combinaciones.append(combinacion)
-                print("COMBINACION ssss ", len(combinaciones))
+                #print("COMBINACION ssss ", len(combinaciones))
 
     for i in combinaciones:
         link = {
