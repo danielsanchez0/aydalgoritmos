@@ -29,8 +29,9 @@ class archivosControl():
 		name = file.getElementsByTagName("grafoId")[0]
 		grafoId =  int(name.firstChild.data)
 
-		name = file.getElementsByTagName("grafoName")[0]
-		grafoName = name.firstChild.data
+		#name = file.getElementsByTagName("grafoName")[0]
+		#grafoName = name.firstChild.data
+		grafoName = "grafo "+str(grafoId)
 
 		nodos = []
 		links = []
@@ -84,7 +85,7 @@ class archivosControl():
 		r = e.Element("Graph")
 
 		e.SubElement(r,"grafoId").text = str(d["grafoId"])                      # Edit the element's tail
-		e.SubElement(r,"grafoName").text = d["grafoName"]
+		e.SubElement(r,"grafoName").text = str(d["grafoName"])
 
 		nodes = e.SubElement(r,"nodes")
 		links = e.SubElement(r,"links")

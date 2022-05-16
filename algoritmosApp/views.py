@@ -118,9 +118,10 @@ def simple_upload(request):
 	fs = FileSystemStorage()
 	filename = fs.save(myfile.name, myfile)
 	upload_file_url = fs.url(filename)
-	link_servidor = "http://localhost:8000"
 
+	link_servidor = "http://localhost:8000"
 	direccion = str(link_servidor+str(upload_file_url))
+
 	data = None
 
 	if archivosControl.getExtensionFile(direccion) == '.json':
@@ -135,14 +136,14 @@ def simple_upload(request):
 		#data = json.dumps(s)
 		print(data)
 
+	data['grafoName'] = 'grafo '+ str(data['grafoId'])
+
 	if  data['grafoId'] != None and data['grafoName'] != None:
 		grafo = Graphs(grafoName=data['grafoName'],nodes=data['nodes'],links=data['links'])
 		grafo.save()
 
 		grafos_serializer = GrafoSerializer(grafo,many=False)
 		return JsonResponse(grafos_serializer.data,safe=False)
-
-	return JsonResponse(upload_file_url,safe=False)
 
 # Create your views here.
 @csrf_exempt
