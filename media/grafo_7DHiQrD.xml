@@ -147,12 +147,21 @@
          <radius>10.0</radius>
          <coordenates>None</coordenates>
       </node>
+      <node>
+         <id>30</id>
+         <name>Nodo 30</name>
+         <label>N30</label>
+         <data>{}</data>
+         <type/>
+         <radius>30.0</radius>
+         <coordenates>None</coordenates>
+      </node>
    </nodes>
    <links>
       <link>
          <source>1</source>
          <target>2</target>
-         <distance>20</distance>
+         <distance>-20</distance>
       </link>
       <link>
          <source>2</source>
