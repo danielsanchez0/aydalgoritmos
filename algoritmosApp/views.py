@@ -44,19 +44,48 @@ def clustering(request, id=0):
     G.add_nodes_from(nodos)
     G.add_edges_from(aristas)
     #A = nx.adjacency_matrix(G)
+        
     arr = nx.to_numpy_array(G)
     tiempoInicio = time.time()
     clusters = get_clusters(arr, 3)
     tiempoTotal = time.time() - tiempoInicio
+    nodos = list(G.nodes)
     print("")
     print("")
     print("")
+    index = []
+    listas =[]
+    for clave, valor in clusters.items():  
+        for posicion in valor:
+            index.append(nodos[posicion])
+        listas.append(index)
+        index = []
+        
+    print("Listas ", listas)
     print("CLUSTER")
     print(clusters)
     print("")
     print("")
     print("")
-    return JsonResponse("funciona", safe=False)
+    grafo = Graphs(grafoName= id+ " C", nodes=nodes, links=links)
+    k = 0
+    aux = None
+    aristas = []
+    for i in listas:
+        k = 0
+        print("CLUSTER ", i)
+        #print("CANTIDAD ARISTAS ", len(grafo.links))
+        while k < len(grafo.links):
+                if grafo.links[k]["source"] in i and grafo.links[k]["target"] in i:
+                    print("Aristas ",grafo.links[k])
+                    aristas.append(grafo.links[k])
+                k = k+1
+    #print("LINKS ", aristas)
+    return JsonResponse({ "grafoId": grafo.grafoId,
+                         "nodes": nodes,
+                         "links": aristas,
+        "tiempo": tiempoTotal,
+                         "segmentos": str(clusters)}, safe=False)
 
 def queyrannne(request, id=0):
     graphs = Graphs.objects.get(grafoId=id)
@@ -113,7 +142,6 @@ def queyrannne(request, id=0):
             if aux is not None:
                 grafo.links.remove(aux)
             k = k+1
-    grafo.save()
     return JsonResponse({ "grafoId": grafo.grafoId,
                          "nodes": grafo.nodes,
                          "links": grafo.links,
