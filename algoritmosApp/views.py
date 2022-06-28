@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 # from pyrsistent import T
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
-
+import numpy as np
 from algoritmosApp.models import Graphs
 from algoritmosApp.serializers import GrafoSerializer
 
@@ -16,9 +16,10 @@ import json
 import random
 from datetime import datetime
 
+from algoritmosApp.Control.algorithms import inicializar
 from algoritmosApp.Control.archivos import archivosControl
 
-def export_matriz(request, id = 0):
+def queyrannne(request, id=0):
     graphs = Graphs.objects.get(grafoId=id)
     grafos_serializer = GrafoSerializer(graphs, many=False)
 
@@ -43,8 +44,69 @@ def export_matriz(request, id = 0):
     G.add_edges_from(aristas)
 
     A = nx.adjacency_matrix(G)
-    arr = A.toarray()
-    print(arr)
+    arr = nx.to_numpy_array(G)
+    corte = inicializar(arr)
+    cortar = corte[len(corte)-1] # nodo a cortar
+    print("NODOS ", G.nodes)
+    nodos = list(G.nodes)
+    posicion = cortar[0]
+    nodocort = nodos[posicion-1]
+    print("NODO CORTAR ", nodocort)
+    
+    k = 0
+    aux = None
+    
+    grafo = Graphs(grafoName= id+ " Q", nodes=nodes, links=links)
+    print("TAMAÑO NODOS", len(grafo.nodes))
+    while k < len(grafo.links):
+            if grafo.links[k]["source"] == nodocort or grafo.links[k]["target"] == nodocort:
+                aux = grafo.links[k]
+            if aux is not None:
+                grafo.links.remove(aux)
+            k = k+1
+    grafo.save()
+    return JsonResponse("funciona", safe=False)
+
+
+def export_matriz(request, id = 0):
+    graphs = Graphs.objects.get(grafoId=id)
+    grafos_serializer = GrafoSerializer(graphs, many=False)
+
+    nodos = []
+    aristas = []
+
+    grafo =  grafos_serializer.data
+
+    nodes = grafo["nodes"]
+    
+    links = grafo["links"]
+
+    for client in nodos:
+        if client["id"] not in nodes:
+          nodos.append(client["id"])
+
+    for client in links:
+        dictD = (client["source"],client["target"])
+        aristas.append(dictD)
+
+    G=nx.Graph()
+    G.add_nodes_from(nodos)
+    G.add_edges_from(aristas)
+    print("NODOS ", G.nodes)
+    A = nx.adjacency_matrix(G)
+    arr = nx.to_numpy_array(G)
+    rows = arr.shape[0]
+    cols = arr.shape[1]
+    # print("")
+    # print("")
+    # print("")
+    print("//XX")
+    # print(arr)
+    # print("")
+    # print("")
+    # print("")
+    # #print(arr)
+    # print("SSSS")   
 
     return JsonResponse("funciona", safe=False)
 
