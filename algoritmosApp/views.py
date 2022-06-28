@@ -65,9 +65,9 @@ def queyrannne(request, id=0):
     print("YA ", text)
     print("NODO CORTAR ", nodocort)
     print("TIEMPO ", tiempoTotal)
+    
     k = 0
     aux = None
-    
     grafo = Graphs(grafoName= id+ " Q", nodes=nodes, links=links)
     print("TAMAÑO NODOS", len(grafo.nodes))
     while k < len(grafo.links):
@@ -77,7 +77,10 @@ def queyrannne(request, id=0):
                 grafo.links.remove(aux)
             k = k+1
     grafo.save()
-    return JsonResponse({"tiempo": tiempoTotal,
+    return JsonResponse({ "grafoId": grafo.grafoId,
+                         "nodes": grafo.nodes,
+                         "links": grafo.links,
+        "tiempo": tiempoTotal,
                          "segmentos": text}, safe=False)
 
 
