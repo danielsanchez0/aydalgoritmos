@@ -18,6 +18,35 @@ from datetime import datetime
 
 from algoritmosApp.Control.archivos import archivosControl
 
+def export_matriz(request, id = 0):
+    graphs = Graphs.objects.get(grafoId=id)
+    grafos_serializer = GrafoSerializer(graphs, many=False)
+
+    nodos = []
+    aristas = []
+
+    grafo =  grafos_serializer.data
+
+    nodes = grafo["nodes"]
+    links = grafo["links"]
+
+    for client in nodos:
+        if client["id"] not in nodes:
+          nodos.append(client["id"])
+
+    for client in links:
+        dictD = (client["source"],client["target"])
+        aristas.append(dictD)
+
+    G=nx.Graph()
+    G.add_nodes_from(nodos)
+    G.add_edges_from(aristas)
+
+    A = nx.adjacency_matrix(G)
+    arr = A.toarray()
+    print(arr)
+
+    return JsonResponse("funciona", safe=False)
 
 def export_xml(request, id=0):
     graphs = Graphs.objects.get(grafoId=id)

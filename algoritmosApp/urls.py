@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^imagexc$', views.img_ex),
     url(r'^randomgraph$', views.random_graph),
     url(r'^xml/([0-9]+)$', views.export_xml),
+    url(r'^matriz/([0-9]+)$', views.export_matriz),
 ]
