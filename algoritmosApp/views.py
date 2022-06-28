@@ -7,6 +7,7 @@ import numpy as np
 from algoritmosApp.models import Graphs
 from algoritmosApp.serializers import GrafoSerializer
 
+import time
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -45,14 +46,25 @@ def queyrannne(request, id=0):
 
     A = nx.adjacency_matrix(G)
     arr = nx.to_numpy_array(G)
-    corte = inicializar(arr)
-    cortar = corte[len(corte)-1] # nodo a cortar
+    tiempoInicio = time.time()
+    segmentos = inicializar(arr)
+    tiempoTotal = time.time() - tiempoInicio
+    cortar = segmentos[len(segmentos)-1] # nodo a cortar
     print("NODOS ", G.nodes)
     nodos = list(G.nodes)
     posicion = cortar[0]
     nodocort = nodos[posicion-1]
+    lista = list(segmentos)
+    text = "("
+    for i in lista[0]:
+        text+= str(nodos[i-1]) +", "
+    text+="), ("
+    for i in lista[1]:
+        text+= str(nodos[i-1]) +", "
+    text+=")"
+    print("YA ", text)
     print("NODO CORTAR ", nodocort)
-    
+    print("TIEMPO ", tiempoTotal)
     k = 0
     aux = None
     
@@ -65,7 +77,8 @@ def queyrannne(request, id=0):
                 grafo.links.remove(aux)
             k = k+1
     grafo.save()
-    return JsonResponse("funciona", safe=False)
+    return JsonResponse({"tiempo": tiempoTotal,
+                         "segmentos": text}, safe=False)
 
 
 def export_matriz(request, id = 0):
