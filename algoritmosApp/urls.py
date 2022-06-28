@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^randomgraph$', views.random_graph),
     url(r'^xml/([0-9]+)$', views.export_xml),
     url(r'^matriz/([0-9]+)$', views.export_matriz),
-    url(r'^quey/([0-9]+)$', views.queyrannne)
+    url(r'^quey/([0-9]+)$', views.queyrannne),
+    url(r'^cluster/([0-9]+)$', views.clustering)
     
 ]

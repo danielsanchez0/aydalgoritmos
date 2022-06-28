@@ -6,7 +6,6 @@ from django.http.response import JsonResponse
 import numpy as np
 from algoritmosApp.models import Graphs
 from algoritmosApp.serializers import GrafoSerializer
-
 import time
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -19,6 +18,45 @@ from datetime import datetime
 
 from algoritmosApp.Control.algorithms import inicializar
 from algoritmosApp.Control.archivos import archivosControl
+from algoritmosApp.Control.algorithms import get_clusters
+
+def clustering(request, id=0):
+    graphs = Graphs.objects.get(grafoId=id)
+    grafos_serializer = GrafoSerializer(graphs, many=False)
+
+    nodos = []
+    aristas = []
+
+    grafo =  grafos_serializer.data
+
+    nodes = grafo["nodes"]
+    links = grafo["links"]
+
+    for client in nodos:
+        if client["id"] not in nodes:
+          nodos.append(client["id"])
+
+    for client in links:
+        dictD = (client["source"],client["target"])
+        aristas.append(dictD)
+
+    G=nx.Graph()
+    G.add_nodes_from(nodos)
+    G.add_edges_from(aristas)
+    #A = nx.adjacency_matrix(G)
+    arr = nx.to_numpy_array(G)
+    tiempoInicio = time.time()
+    clusters = get_clusters(arr, 3)
+    tiempoTotal = time.time() - tiempoInicio
+    print("")
+    print("")
+    print("")
+    print("CLUSTER")
+    print(clusters)
+    print("")
+    print("")
+    print("")
+    return JsonResponse("funciona", safe=False)
 
 def queyrannne(request, id=0):
     graphs = Graphs.objects.get(grafoId=id)
@@ -43,14 +81,13 @@ def queyrannne(request, id=0):
     G=nx.Graph()
     G.add_nodes_from(nodos)
     G.add_edges_from(aristas)
-
-    A = nx.adjacency_matrix(G)
+    #A = nx.adjacency_matrix(G)
     arr = nx.to_numpy_array(G)
     tiempoInicio = time.time()
     segmentos = inicializar(arr)
     tiempoTotal = time.time() - tiempoInicio
     cortar = segmentos[len(segmentos)-1] # nodo a cortar
-    print("NODOS ", G.nodes)
+    #print("NODOS ", G.nodes)
     nodos = list(G.nodes)
     posicion = cortar[0]
     nodocort = nodos[posicion-1]
@@ -62,14 +99,14 @@ def queyrannne(request, id=0):
     for i in lista[1]:
         text+= str(nodos[i-1]) +", "
     text+=")"
-    print("YA ", text)
-    print("NODO CORTAR ", nodocort)
-    print("TIEMPO ", tiempoTotal)
+    #print("YA ", text)
+    #print("NODO CORTAR ", nodocort)
+    #print("TIEMPO ", tiempoTotal)
     
     k = 0
     aux = None
     grafo = Graphs(grafoName= id+ " Q", nodes=nodes, links=links)
-    print("TAMAÑO NODOS", len(grafo.nodes))
+    #print("TAMAÑO NODOS", len(grafo.nodes))
     while k < len(grafo.links):
             if grafo.links[k]["source"] == nodocort or grafo.links[k]["target"] == nodocort:
                 aux = grafo.links[k]
