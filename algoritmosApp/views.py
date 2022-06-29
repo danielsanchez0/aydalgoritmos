@@ -18,12 +18,12 @@ from datetime import datetime
 
 from algoritmosApp.Control.algorithms import inicializar
 from algoritmosApp.Control.archivos import archivosControl
-from algoritmosApp.Control.algorithms import get_clusters
+from algoritmosApp.Control.algorithms import inicializarCluster
 
 def clustering(request, id=0):
     cantidad_clusters = JSONParser().parse(request)
     nclusters = int(cantidad_clusters["ncluster"])
-    print("LLEGÓ ", nclusters)
+    #print("LLEGÓ ", nclusters)
     graphs = Graphs.objects.get(grafoId=id)
     grafos_serializer = GrafoSerializer(graphs, many=False)
 
@@ -50,7 +50,7 @@ def clustering(request, id=0):
         
     arr = nx.to_numpy_array(G)
     tiempoInicio = time.time()
-    clusters = get_clusters(arr, nclusters)
+    clusters = inicializarCluster(arr, nclusters)
     tiempoTotal = time.time() - tiempoInicio
     nodos = list(G.nodes)
     print("")
