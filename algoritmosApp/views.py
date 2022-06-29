@@ -81,6 +81,11 @@ def clustering(request, id=0):
                     aristas.append(grafo.links[k])
                 k = k+1
     #print("LINKS ", aristas)
+    indice = 0
+    for clave in clusters.keys():
+        clusters[clave] = listas[indice]
+        indice = indice +1
+        
     return JsonResponse({ "grafoId": grafo.grafoId,
                          "nodes": nodes,
                          "links": aristas,
