@@ -21,6 +21,9 @@ from algoritmosApp.Control.archivos import archivosControl
 from algoritmosApp.Control.algorithms import get_clusters
 
 def clustering(request, id=0):
+    cantidad_clusters = JSONParser().parse(request)
+    nclusters = int(cantidad_clusters["ncluster"])
+    print("LLEGÓ ", nclusters)
     graphs = Graphs.objects.get(grafoId=id)
     grafos_serializer = GrafoSerializer(graphs, many=False)
 
@@ -47,7 +50,7 @@ def clustering(request, id=0):
         
     arr = nx.to_numpy_array(G)
     tiempoInicio = time.time()
-    clusters = get_clusters(arr, 3)
+    clusters = get_clusters(arr, nclusters)
     tiempoTotal = time.time() - tiempoInicio
     nodos = list(G.nodes)
     print("")
@@ -126,10 +129,14 @@ def queyrannne(request, id=0):
     posicion = cortar[0]
     nodocort = nodos[posicion-1]
     lista = list(segmentos)
+    #print("TENGO ", segmentos)
+    #print("TENGO ", lista[0])
     text = "("
     for i in lista[0]:
+        print(i)
         text+= str(nodos[i-1]) +", "
     text+="), ("
+    #print("TEXTO ", text)
     for i in lista[1]:
         text+= str(nodos[i-1]) +", "
     text+=")"

@@ -117,11 +117,11 @@ def inicializar(adyacencia):
     print("")
     m1 = np.array( adyacencia ) 
     m2 = np.array(aux)  
-    V = [x for x in range(1, len(aux) + 1)]
-    f = lambda V,S, params: mutualInformation(adyacencia,aux)
+    vertices = [x for x in range(1, len(aux) + 1)]
+    f = lambda vertices,S, params: mutualInformation(m1,m2)
     
-    R, fval = optimal_set(V, f)
-    print("RESULTADO: ", R)
+    R, fval = optimal_set(vertices, f)
+    #print("RESULTADO: ", R)
     return R
 
 def get_clusters(graph, k):
