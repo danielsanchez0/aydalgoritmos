@@ -47,8 +47,12 @@ def clustering(request, id=0):
     G.add_nodes_from(nodos)
     G.add_edges_from(aristas)
     #A = nx.adjacency_matrix(G)
-        
+    print("/")
+    print("/")
+    print("/")
     arr = nx.to_numpy_array(G)
+    print("NCLUSTER ", nclusters)
+    print("ADYACENCIAS ", arr)
     tiempoInicio = time.time()
     clusters = inicializarCluster(arr, nclusters)
     tiempoTotal = time.time() - tiempoInicio
@@ -129,8 +133,8 @@ def queyrannne(request, id=0):
     posicion = cortar[0]
     nodocort = nodos[posicion-1]
     lista = list(segmentos)
-    #print("TENGO ", segmentos)
-    #print("TENGO ", lista[0])
+    print("TENGO ", segmentos)
+    print("TENGO ", lista[0])
     text = "("
     for i in lista[0]:
         print(i)
@@ -140,9 +144,9 @@ def queyrannne(request, id=0):
     for i in lista[1]:
         text+= str(nodos[i-1]) +", "
     text+=")"
-    #print("YA ", text)
-    #print("NODO CORTAR ", nodocort)
-    #print("TIEMPO ", tiempoTotal)
+    print("YA ", text)
+    print("NODO CORTAR ", nodocort)
+    print("TIEMPO ", tiempoTotal)
     
     k = 0
     aux = None
