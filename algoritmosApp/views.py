@@ -9,7 +9,6 @@ from algoritmosApp.serializers import GrafoSerializer
 import time
 import networkx as nx
 import matplotlib.pyplot as plt
-
 from django.core.files.storage import FileSystemStorage
 import urllib.request
 import json

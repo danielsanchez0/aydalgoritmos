@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 from numpy import linalg as LA
-
+# -----------  Queyranne ------------------------
 def mutualInformation(m1, m2):
     sum_mi = 0.0
     x_value_list = np.unique(m1)
@@ -87,8 +87,6 @@ def optimal_set(V, f, params=None):
     fval = p[i]
     # make R look pretty
     notR = diff(V, R)
-    ## R = sorted(R)
-    ## notR = sorted(notR)
     if R[0] < notR[0]:
         R = (tuple(R), tuple(notR))
     else:
@@ -106,15 +104,13 @@ def inicializar(adyacencia):
                 aux[x,y] = 0
             else:
                 aux[x,y] = 1
-    print("")
-    print("ORIGINAL")
-    print(adyacencia)
-    print("")
-    print("COMPLEMENTO")
-    print(aux)
-    print("")
-    print("")
-    print("")
+    # print("")
+    # print("ORIGINAL")
+    # print(adyacencia)
+    # print("")
+    # print("")
+    # print("")
+    # print("")
     m1 = np.array( adyacencia ) 
     m2 = np.array(aux)  
     vertices = [x for x in range(1, len(aux) + 1)]
@@ -124,6 +120,8 @@ def inicializar(adyacencia):
     #print("RESULTADO: ", R)
     return R
 
+# --------------------------------------------------
+# -------------- Special Clustering ---------------
 def get_clusters(graph, k):
     numnodes = graph.shape[0]
 
